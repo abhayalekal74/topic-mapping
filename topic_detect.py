@@ -7,7 +7,7 @@ from collections import defaultdict
 word_subject_map = dict()
 
 
-def build_map(map_file):
+def load_map(map_file):
 	global word_subject_map
 	with open(map_file, 'r') as f:
 		word_subject_map = json.loads(f.read())
@@ -29,14 +29,27 @@ def detect_topic(inp):
 
 		print (d)
 
-		max_sub = max(d.items(), key=lambda x: x[1])
-		return (max_sub[0], max_sub[1] / len(words))
+		subject_scores = list()
+
+		for k, v in d.items():
+			subject_scores.append([k, v])
+
+		subject_scores.sort(key=lambda x: x[1], reverse=True)
+		
+		best_matches = [subject_scores[0][0]]
+		max_score = subject_scores[0][1]
+		for subject in subject_scores[1:]:
+			if subject[1] == max_score:
+				best_matches.append(subject[0])
+			else:
+				break
+		return best_matches 
 	else:
 		return ("Could not detect subject")
 
 
 if __name__=='__main__':
-	build_map(sys.argv[1])
+	load_map(sys.argv[1])
 	while True:
 		inp = input("\nType sentence, q to quit..\n")
 		if inp == 'q':
