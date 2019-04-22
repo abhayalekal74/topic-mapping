@@ -6,6 +6,7 @@ word_subject_map = dict()
 
 
 def add_to_map(word, subject):
+	global word_subject_map
 	try:
 		subjects = word_subject_map[word]
 		if subject in subjects:
@@ -16,16 +17,20 @@ def add_to_map(word, subject):
 	subjects.append(subject)
 
 
-def save_map():
-	op = open(sys.argv[2], 'w')
+def save_map(sync):
+	op = open(sync, 'w')
 	op.write(json.dumps(word_subject_map))
 	op.close()
 
 
-with open(sys.argv[1], 'r') as f:
-	for line in f.readlines():
-		datum = line.split(",")
-		for w in datum[1].split():
-			add_to_map(w, datum[0])
+def build_map(data_file):
+	with open(data_file, 'r') as f:
+		for line in f.readlines():
+			datum = line.split(",")
+			for w in datum[1].split():
+				add_to_map(w, datum[0])
 
-	save_map()
+
+if __name__ == '__main__':
+	build_map(sys.argv[1])
+	save_map(sys.argv[2])
