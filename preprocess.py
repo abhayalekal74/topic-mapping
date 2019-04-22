@@ -23,6 +23,8 @@ def preprocess_sentence(s):
 
 
 def process_record(record):
+	if record[1] == 'Maths':
+		record[1] == 'Mathematics'
 	return ",".join([record[1], preprocess_sentence(record[0])])
 
 
