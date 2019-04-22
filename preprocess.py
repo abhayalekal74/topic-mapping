@@ -9,7 +9,7 @@ allowed_subjects = ["Sociology", "Hindi Language", "History", "Geography", "Econ
 
 
 def has_only_alphabets(w):
-	return re.search(r'\b[a-z]{3,}\b', w)
+	return re.search(r'\b[a-z]{4,}\b', w)
 
 
 def preprocess_sentence(s):
