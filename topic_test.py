@@ -1,14 +1,16 @@
 from topic_detect import detect_topic, load_map
-from preprocess import preprocess_sentence
 
 
 def detect(line):
 	datum = line.rsplit(',', 2)
-	detected_topics= detect_topic(preprocess_sentence(datum[0]))
-	print (detected_topics, datum[1])
-	if datum[1] in detected_topics:
+	detected_topics= detect_topic(datum[1])
+	if datum[0] == 'Maths':
+		datum[0] = 'Mathematics'
+	if detected_topics == 'Could not detect subject' or datum[0] in detected_topics:
 		return 1
 	else: 
+		print ("\n", line)
+		print (detected_topics, datum[0])
 		return 0
 
 
@@ -19,6 +21,5 @@ if __name__=='__main__':
 		lines = f.readlines()
 		score = 0
 		for line in lines:
-			print ("\n", line)
 			score += detect(line)
 	print ("Accuracy", score / len(lines))

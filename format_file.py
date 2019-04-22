@@ -2,7 +2,7 @@ import sys
 import re
 
 
-def format_file(inp, out, order)
+def format_file(inp, out, order):
 	with open(inp, 'r') as f:
 		lines = f.read()
 
