@@ -9,7 +9,7 @@ def detect(line):
 	if detected_topics == 'Could not detect subject' or datum[0] in detected_topics:
 		return 1
 	else: 
-		print ("\n", line)
+		print ("\n", datum[1].strip())
 		print (detected_topics, datum[0])
 		return 0
 

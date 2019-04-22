@@ -27,8 +27,6 @@ def detect_topic(inp):
 		for subject in subjects:
 			d[subject] += 1
 
-		print (d)
-
 		subject_scores = list()
 
 		for k, v in d.items():
