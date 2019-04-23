@@ -5,6 +5,7 @@ from collections import defaultdict
 
 
 word_subject_map = dict()
+TOP_SUBJECTS = 9
 
 
 def load_map(map_file):
@@ -34,7 +35,7 @@ def detect_topic(inp):
 			subject_scores.append([k, v])
 
 		subject_scores.sort(key=lambda x: x[1], reverse=True)
-		return subject_scores[:5] 
+		return subject_scores[:TOP_SUBJECTS] 
 	else:
 		return ("Could not detect subject")
 
