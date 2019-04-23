@@ -1,5 +1,6 @@
 import sys
 import json
+from collections import defaultdict
 
 
 word_subject_map = dict()
@@ -9,12 +10,10 @@ def add_to_map(word, subject):
 	global word_subject_map
 	try:
 		subjects = word_subject_map[word]
-		if subject in subjects:
-			return
 	except KeyError:
-		subjects = list()
+		subjects = defaultdict(int)
 		word_subject_map[word] = subjects
-	subjects.append(subject)
+	subjects[subject] += 1
 
 
 def save_map(sync):

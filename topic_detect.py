@@ -15,25 +15,28 @@ def load_map(map_file):
 
 def detect_topic(inp):
 	sentence = preprocess_sentence(inp)
-	subjects = list()
+	subject_freq = defaultdict(int)
 	words = sentence.split()
+	subjects_found = False
 	for w in words:
 		try:
-			subjects += word_subject_map[w]
+			print (w, word_subject_map[w])
+			for k, v in word_subject_map[w].items():
+				subject_freq[k] += v
+			if not subjects_found:
+				subjects_found = True
 		except KeyError:
 			pass
-	if subjects:
-		d = defaultdict(int)
-		for subject in subjects:
-			d[subject] += 1
-
+	if subjects_found:
 		subject_scores = list()
 
-		for k, v in d.items():
+		for k, v in subject_freq.items():
 			subject_scores.append([k, v])
 
 		subject_scores.sort(key=lambda x: x[1], reverse=True)
 		
+		print (subject_scores)
+
 		best_matches = [subject_scores[0][0]]
 		max_score = subject_scores[0][1]
 		for subject in subject_scores[1:]:
