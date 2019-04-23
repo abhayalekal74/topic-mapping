@@ -5,7 +5,8 @@ from collections import defaultdict
 
 
 word_subject_map = dict()
-TOP_SUBJECTS = 9
+remove_bottom = 0.25 
+ignore_words = ["please", "mark", "best", "answer", "give", "thank", "correct", "right", "understand", "question"]
 
 
 def load_map(map_file):
@@ -17,17 +18,19 @@ def load_map(map_file):
 def detect_topic(inp):
 	sentence = preprocess_sentence(inp)
 	subject_freq = defaultdict(int)
-	words = sentence.split()
+	words = set(sentence.split())
 	subjects_found = False
 	for w in words:
-		try:
-			print (w, word_subject_map[w])
-			for k, v in word_subject_map[w].items():
-				subject_freq[k] += v
-			if not subjects_found:
-				subjects_found = True
-		except KeyError:
-			pass
+		ignore = sum([1 if w.startswith(i) else 0 for i in ignore_words])
+		if not ignore:
+			try:
+				print (w, word_subject_map[w])
+				for k, v in word_subject_map[w].items():
+					subject_freq[k] += v
+				if not subjects_found:
+					subjects_found = True
+			except KeyError:
+				pass
 	if subjects_found:
 		subject_scores = list()
 
@@ -35,7 +38,13 @@ def detect_topic(inp):
 			subject_scores.append([k, v])
 
 		subject_scores.sort(key=lambda x: x[1], reverse=True)
-		return subject_scores[:TOP_SUBJECTS] 
+		print (subject_scores)
+		up_to_index = 1
+		threshold_score = remove_bottom * subject_scores[0][1]
+		for i in range(1, len(subject_scores)):
+			if subject_scores[i][1] >= threshold_score:
+				up_to_index += 1
+		return subject_scores[:up_to_index] 
 	else:
 		return ("Could not detect subject")
 
