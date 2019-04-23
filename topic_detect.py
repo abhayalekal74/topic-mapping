@@ -34,17 +34,7 @@ def detect_topic(inp):
 			subject_scores.append([k, v])
 
 		subject_scores.sort(key=lambda x: x[1], reverse=True)
-		
-		print (subject_scores)
-
-		best_matches = [subject_scores[0][0]]
-		max_score = subject_scores[0][1]
-		for subject in subject_scores[1:]:
-			if subject[1] == max_score:
-				best_matches.append(subject[0])
-			else:
-				break
-		return best_matches 
+		return subject_scores[:5] 
 	else:
 		return ("Could not detect subject")
 
